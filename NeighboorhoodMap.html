@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Dream Neighborhood Map</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/css/bootstrap.css" rel="stylesheet" media="screen">
+    <link href="css/styles.css" rel="stylesheet" media="screen">
+
+
+</head>
+<body>
+
+    <span data-bind="text: locArray()"></span>
+
+    <ul class= "list-unstyled" data-bind="foreach: locArray()" >
+        <li data-bind="text: name , click: $parent.OpenInfoWindow"></li>
+    </ul>
+
+    <input id="pac-input" class="controls" type="text" placeholder="Enter a location">
+    <div id="map-canvas" class="col-md-6"></div>
+
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.3.0/knockout-min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=places"></script>
+    <script src="js/app2.js"></script>
+</body>
+</html>
