@@ -12,7 +12,6 @@
 <body>
 
     <span data-bind="text: locArray()"></span>
-
     <ul class= "list-unstyled" data-bind="foreach: locArray()" >
         <li data-bind="text: name , click: $parent.OpenInfoWindow"></li>
     </ul>
