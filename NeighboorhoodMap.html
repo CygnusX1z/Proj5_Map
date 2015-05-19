@@ -2,19 +2,23 @@
 <html>
 <head>
     <meta charset="ISO-8859-1">
-    <title>Dream Neighborhood Map</title>
+    <title>My Dream Neighborhood Map</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/css/bootstrap.css" rel="stylesheet" media="screen">
     <link href="css/styles.css" rel="stylesheet" media="screen">
-
-
 </head>
 <body>
+    <table>
+        <thead>
+            <tr><th>Monaco Places of Interest</th></tr>
+        </thead>
+        <tbody data-bind="foreach: model">
+            <tr><td data-bind="text: name"></td></tr>
+        </tbody>
+    </table>
 
-    <span data-bind="text: locArray()"></span>
-    <ul class= "list-unstyled" data-bind="foreach: locArray()" >
-        <li data-bind="text: name , click: $parent.OpenInfoWindow"></li>
-    </ul>
+
+
     <input id="pac-input" class="controls" type="text" placeholder="Enter a location">
     <div id="map-canvas" class="col-md-6"></div>
 

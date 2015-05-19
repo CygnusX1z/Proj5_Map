@@ -18,8 +18,6 @@ var model = [
 // ViewModel
 function mapViewModel() {
 	var locArray = ko.observableArray(model);
-	alert('Length of array is ' + locArray().length);
-	alert('First element: ' + locArray()[0]);
 
 	// Starting position
 	var mapStartPos = new google.maps.LatLng(43.736938, 7.421529);	
