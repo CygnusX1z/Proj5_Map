@@ -17,8 +17,9 @@ var model = [
 
 // ViewModel
 function mapViewModel() {
+	// Knockout observableArray
 	var locArray = ko.observableArray(model);
-
+	
 	// Starting position
 	var mapStartPos = new google.maps.LatLng(43.736938, 7.421529);	
 	var mapOptions = {
@@ -26,23 +27,39 @@ function mapViewModel() {
 		  zoom: 15
 		};
 	
-	// Create map
-	var map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);	
+	// Create google map
+	var map = new google.maps.Map(document.getElementById('map-canvas'),
+			mapOptions);	
+
+	// Create google infowindow
+	var infowindow = new google.maps.InfoWindow();
 	
-	// Place pins on map
+	// Place markers on map
     for (i = 0; i < model.length; i++) {
 	   marker = new google.maps.Marker({
 		   position: new google.maps.LatLng(model[i].lat, model[i].long),
 		   map: map,
 		   title: model[i].name
-	   });	  
-   }
+	   });
+	   
+	   // Add google maps 'click' listener and infowindow for each marker 
+	   google.maps.event.addListener(marker, 'click', (function(marker){
+		   return function() {
+			   map.panTo(marker.getPosition());
+			   infowindow.setContent(marker.title+"<div id='content'></div>");
+			   infowindow.open(map, marker);
+		   }
+	   })(marker));	   
+    }
    
-   // Create the search box and link it to the UI element.
-	var input = /** @type {HTMLInputElement} */
+    // Create search box and link it to the UI element.
+    var input = /** @type {HTMLInputElement} */
 		(
 			document.getElementById('pac-input')
 		);
 	map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+	
+	
+	
 };
 ko.applyBindings(new mapViewModel());
