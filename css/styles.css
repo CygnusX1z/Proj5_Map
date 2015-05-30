@@ -17,19 +17,21 @@ html, body, #map-canvas {
 }
 
 #pac-input {
-    background-color: #fff;
-    font-family: Roboto;
-    font-size: 15px;
-    font-weight: 300;
-    margin-left: 12px;
-    padding: 0 11px 0 13px;
-    text-overflow: ellipsis;
-    width: 400px;
+	background-color: #fff;
+	font-family: Roboto;
+	font-size: 15px;
+	font-weight: 300;
+	margin-left: 12px;
+	padding: 0 11px 0 13px;
+	text-overflow: ellipsis;
+	width: 400px;
 }
 
 #list {
 	position: absolute;
-	right: 100px;
-	top: 300px;
+	left: 20px;
+	top: 50px;
 	z-index: 1;
+	background-color: #FBFBEF;
+	padding: 20px;
 }

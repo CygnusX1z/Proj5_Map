@@ -8,11 +8,7 @@
     <link href="css/styles.css" rel="stylesheet" media="screen">
 </head>
 <body>
-    <!--<input id="pac-input" class="controls" type="text" placeholder="Enter a location">-->
-
-    <!-- place searchbox with a binding to the search term -->
-    <input id="filter-box" placeholder="Filter results by: Name" type="search" data-bind="value: filter, valueUpdate:'keyup'" />
-
+    <input id="pac-input" class="controls" type="text" placeholder="Enter a location" data-bind="value: filter, valueUpdate: 'keyup'">
     <table id="list" class="list">
         <tr><th>Monaco Places of Interest</th></tr>
         <tbody data-bind="foreach: filterList()">
@@ -20,10 +16,10 @@
         </tbody>
     </table>
     <div id="map-canvas" class="col-md-6"></div>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=places"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.3.0/knockout-min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=places"></script>
     <script src="js/app.js"></script>
 </body>
 </html>
