@@ -1,3 +1,5 @@
+var markers = [];
+
 // Model
 var model = [
               {name: "Monaco Grand Prix"				,lat: 43.733628, long: 7.421658, markerNum: 0}
@@ -18,7 +20,11 @@ var model = [
 // ViewModel
 function mapViewModel() {
 	// Knockout observableArray
-	var locArray = ko.observableArray(model);
+	//var locArray = ko.observableArray(model);
+	//var markers = ko.observableArray(model);
+	
+	// Filter of location markers
+	//var filterLoc = ko.observable('');
 	
 	// Starting position
 	var mapStartPos = new google.maps.LatLng(43.736938, 7.421529);	
@@ -50,6 +56,8 @@ function mapViewModel() {
 			   infowindow.open(map, marker);
 		   }
 	   })(marker));	   
+	   
+	   markers.push(marker);
     }
    
     // Create search box and link it to the UI element.
@@ -59,7 +67,17 @@ function mapViewModel() {
 		);
 	map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 	
-	
+	// Create function to open info windows in response to clicks on list-view.
+	var OpenInfoWindow= function(model){
+	    var point= markers[model.markerNum];
+	    map.panTo(point.getPosition());
+
+	    // set info window with a title and open the info window
+	    infowindow.open(map, point);
+	    infowindow.setContent(point.title+"<div id='content'></div>");
+	    getApi(point);
+
+	 };
 	
 };
 ko.applyBindings(new mapViewModel());
