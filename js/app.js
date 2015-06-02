@@ -1,4 +1,4 @@
-var infowindow, map, marker, monaco, locArray;
+var infowindow, map, marker, monaco, locArray, wikiUrl;
 var markers = [];
 
 // Model
@@ -27,11 +27,16 @@ var initMap = function(){
     center: monaco
   };
 
+//  var $wikiElem = $('#wikipedia-links');
+  
  // Create map and place in map-canvas div
  map = new google.maps.Map(document.getElementById('map-canvas'),
       mapOptions);
+ 
+ 
+ 
 
- // create marker functions to place markers on map and set up the info window
+ // Create markers and infowindow and place on map
  infowindow = new google.maps.InfoWindow();
   for (i = 0; i < locArray.length; i++) {
     marker = new google.maps.Marker({
@@ -44,7 +49,7 @@ var initMap = function(){
         google.maps.event.addListener(marker, 'click', (function(marker)  {
             return function() {
                 map.panTo(marker.getPosition());
-                infowindow.setContent(marker.title+"<div id='content'></div>");
+                infowindow.setContent(marker.title+"<div id='content'>"+wikiUrl+"</div>");
                 infowindow.open(map, marker);
 
               // Google Maps API marker animation
@@ -53,6 +58,29 @@ var initMap = function(){
             };
         })(marker));
         markers.push(marker);
+        
+     // Wikipedia AJAX request    
+        /*var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + locArray[i] + '&format=json&callback=wikiCallback';  
+          var wikiRequestTimeout = setTimeout(function(){
+          	$wikiElem.text("failed to get wikipedia resources");
+          }, 8000);
+          
+          $.ajax({
+          	url: wikiUrl,
+          	dataType: "jsonp",
+          	//jsonp: "callback",
+          	success: function( response ) {
+          		var articleList = response[1];
+          		
+          		for (var i = 0; i < articleList.length; i++) {
+          			articleStr = articleList[i];
+          			var url = 'http://en.wikipedia.org/wiki/' + articleStr;
+          			$wikiElem.append('<li><a href="' + url + '">' + articleStr + '</a></li>');
+          		};
+          		clearTimeout(wikiRequestTimeout);
+          	}
+          });
+          //return false; */
   }
 };
 
@@ -64,7 +92,6 @@ var mapViewModel = function(){
   self.locArray= ko.observableArray(locArray);
   self.markers=ko.observableArray(markers);
   self.filter= ko.observable('');
-
   // Infowindow list click function
   self.OpenInfoWindow= function(locArray){
     var point= markers[locArray.markerNum];
@@ -114,6 +141,8 @@ var mapViewModel = function(){
 	  return filteredmarkers;	
 	  }
 	};
+	
+ 
 };
 
 
