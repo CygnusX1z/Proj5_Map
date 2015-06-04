@@ -40,7 +40,7 @@ var initMap = function(){
  infowindow = new google.maps.InfoWindow();
   for (i = 0; i < locArray.length; i++) {
     marker = new google.maps.Marker({
-            position: new google.maps.LatLng(locArray[i].lat, locArray[i].long)
+              position: new google.maps.LatLng(locArray[i].lat, locArray[i].long)
     		, map: map
     		, title: locArray[i].name           
         });
@@ -49,7 +49,7 @@ var initMap = function(){
         google.maps.event.addListener(marker, 'click', (function(marker)  {
             return function() {
                 map.panTo(marker.getPosition());
-                infowindow.setContent(marker.title+"<div id='content'>"+wikiUrl+"</div>");
+                infowindow.setContent(marker.title+"<div id='content'>"+"<a href=http://en.wikipedia.org/w/api.php?action=opensearch&search="+marker.title+"&format=json&callback=wikiCallback>"+"Wikipedia"+"</a>"+"</div>");
                 infowindow.open(map, marker);
 
               // Google Maps API marker animation
@@ -59,13 +59,14 @@ var initMap = function(){
         })(marker));
         markers.push(marker);
         
-     // Wikipedia AJAX request    
-        /*var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + locArray[i] + '&format=json&callback=wikiCallback';  
+     // Wikipedia AJAX request  
+     
+     var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + locArray[i].title + '&format=json&callback=wikiCallback';  
           var wikiRequestTimeout = setTimeout(function(){
-          	$wikiElem.text("failed to get wikipedia resources");
+          	//$wikiElem.text("failed to get wikipedia resources");
           }, 8000);
           
-          $.ajax({
+        /*  $.ajax({
           	url: wikiUrl,
           	dataType: "jsonp",
           	//jsonp: "callback",
@@ -79,8 +80,8 @@ var initMap = function(){
           		};
           		clearTimeout(wikiRequestTimeout);
           	}
-          });
-          //return false; */
+          }); */
+          //return false;
   }
 };
 
