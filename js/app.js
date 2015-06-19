@@ -67,16 +67,11 @@ var initMap = function() {
     	success: function(response) {
     		var articleList = response[1];
     		for (var i=0; i < articleList.length; i++) {
-    			articleStr = articleList[i];
+    			articleStr = articleList[0];
     			var url = 'http://en.wikipedia.org/wiki/' + articleStr;
     			console.log(url);
     			//$wikiElem.append('<li><a href="' + url + '" target="_blank">' + articleStr + '</a></li>')
-    		};
-    		
-    		
-		 
-                 
-                 
+    		};                 
     		//clearTimeout(wikiRequestTimeout);
     	}
     });
