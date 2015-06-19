@@ -1,83 +1,142 @@
+var infowindow, map, marker, monaco, locArray, wikiUrl;
 var markers = [];
 
 // Model
-var model = [
-              {name: "Monaco Grand Prix"				,lat: 43.733628, long: 7.421658, markerNum: 0}
-             ,{name: "Casino Monte Carlo" 				,lat: 43.739146, long: 7.428073, markerNum: 1}
-             ,{name: "Royal Marine Museum & Aquarium"	,lat: 43.730612, long: 7.425276, markerNum: 2}
-             ,{name: "Exotic Gardens of Monaco"			,lat: 43.731381, long: 7.414032, markerNum: 3}
-             ,{name: "Prince's Palace of Monaco"		,lat: 43.731444, long: 7.419906, markerNum: 4}
-             ,{name: "Cathedral of Saint Charles"		,lat: 43.742619, long: 7.427236, markerNum: 5}             
-             ,{name: "Church of Saint Devote"			,lat: 43.737426, long: 7.421087, markerNum: 6}
-             ,{name: "Japanese Gardens"					,lat: 43.742343, long: 7.430889, markerNum: 7}
-             ,{name: "Monte-Carlo Bay Hotel & Resort"	,lat: 43.748983, long: 7.438866, markerNum: 8}
-             ,{name: "Hotel Hermitage Monte-Carlo"		,lat: 43.738240, long: 7.425863, markerNum: 9}
-             ,{name: "Saint Nicholas Cathedral" 		,lat: 43.730287, long: 7.422677, markerNum: 10}
-             ,{name: "Francois Grimaldi Statue"			,lat: 43.731372, long: 7.421282, markerNum: 11}	
-             ,{name: "Grimaldi Forum Monaco"			,lat: 43.744038, long: 7.431400, markerNum: 12}
-            ];
+locArray = [
+              {name: "Casino Monte Carlo" 				,lat: 43.739146, long: 7.428073, urlName: "Monte_Carlo_Casino"							, markerNum: 0}
+             ,{name: "Cathedral of Saint Charles"		,lat: 43.742619, long: 7.427236, urlName: "Cathedral%20of%20Saint%20Charles%20Monaco"	, markerNum: 1} 
+             ,{name: "Church of Saint Devote"			,lat: 43.737426, long: 7.421087, urlName: "Sainte-Dévote%20Chapel"						, markerNum: 2}
+             ,{name: "Exotic Gardens of Monaco"			,lat: 43.731381, long: 7.414032, urlName: "Jardin_Exotique_de_Monaco"					, markerNum: 3}
+             ,{name: "Francois Grimaldi Statue"			,lat: 43.731372, long: 7.421282, urlName: "Fran%C3%A7ois_Grimaldi"						, markerNum: 4}	
+             ,{name: "Grimaldi Forum"					,lat: 43.744038, long: 7.431400, urlName: "Grimaldi_Forum"								, markerNum: 5}
+             ,{name: "Hotel Hermitage Monte-Carlo"		,lat: 43.738240, long: 7.425863, urlName: "Hotel%20Hermitage%20Monte-Carlo"				, markerNum: 6}
+             ,{name: "Japanese Gardens"					,lat: 43.742343, long: 7.430889, urlName: "Japanese%20Gardens%20Monaco"					, markerNum: 7}
+             ,{name: "Monaco Grand Prix"				,lat: 43.733628, long: 7.421658, urlName: "Monaco%20Grand%20Prix"						, markerNum: 8}
+             ,{name: "Monte-Carlo Bay Hotel & Resort"	,lat: 43.748983, long: 7.438866, urlName: "Monte-Carlo%20Bay%20Hotel%20&%20Resort"		, markerNum: 9}
+             ,{name: "Prince's Palace of Monaco"		,lat: 43.731444, long: 7.419906, urlName: "Prince's%20Palace%20of%20Monaco"				, markerNum: 10}             
+             ,{name: "Royal Marine Museum & Aquarium"	,lat: 43.730612, long: 7.425276, urlName: "Royal%20Marine%20Museum%20&%20Aquarium%20Monaco"	, markerNum: 11}             
+             ,{name: "Saint Nicholas Cathedral" 		,lat: 43.730287, long: 7.422677, urlName: "Saint_Nicholas_Cathedral,_Monaco" 			, markerNum: 12}            
+           ];
+
+
+var initMap = function(){
+  // Set 'starting' position and mapOptions
+  monaco= new google.maps.LatLng(43.737426, 7.421087);
+  var mapOptions = {
+    zoom: 15,
+    center: monaco
+  };
+  
+ // Create map and place in map-canvas div
+ map = new google.maps.Map(document.getElementById('map-canvas'),
+      mapOptions);
+ 
+ // Create markers and infowindow and place on map
+ self.infowindow = new google.maps.InfoWindow();
+  for (i = 0; i < locArray.length; i++) {
+    marker = new google.maps.Marker({
+              position: new google.maps.LatLng(locArray[i].lat, locArray[i].long)
+    		, map: map
+    		, title: locArray[i].name  
+    		, wikiLink: '<br><a href='+wikiUrl+'>'+'Wikipedia Article'+'</a>'
+        });
+    
+    $(document).ready(function() {
+        var wikiURL ='https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles='+locArray[i].urlName+' '+'target="_blank"';
+        var wikiRequestTimeout = setTimeout(function() {
+        	wikiURL= 'Failed to Get Wikipedia Resources';
+          }, 8000);
+
+        $.ajax({
+          url: wikiURL,
+          dataType: "jsonp",
+          //cache: true,
+          //jsonp: "callback",
+          success: function (response) {
+              var url = 'http://en.wikipedia.org/?curid=8210131';
+            //clearTimeout(wikiRequestTimeout);
+          }
+        });
+      });
+
+    	// Google Maps API on click addListener
+        google.maps.event.addListener(marker, 'click', (function(marker)  {
+            return function() {
+                map.panTo(marker.getPosition());
+                infowindow.setContent(marker.title+marker.wikiLink);
+                //infowindow.setContent(marker.title);
+                infowindow.open(map, marker);
+
+				// Google Maps API marker animation
+				marker.setAnimation(google.maps.Animation.BOUNCE);
+				setTimeout(function(){ marker.setAnimation(null); }, 750);
+			};
+        })(marker));
+        markers.push(marker);        
+  }
+};
 
 // ViewModel
-function mapViewModel() {
-	// Knockout observableArray
-	//var locArray = ko.observableArray(model);
-	//var markers = ko.observableArray(model);
-	
-	// Filter of location markers
-	//var filterLoc = ko.observable('');
-	
-	// Starting position
-	var mapStartPos = new google.maps.LatLng(43.736938, 7.421529);	
-	var mapOptions = {
-		  center: mapStartPos,
-		  zoom: 15
-		};
-	
-	// Create google map
-	var map = new google.maps.Map(document.getElementById('map-canvas'),
-			mapOptions);	
+var mapViewModel = function(){
+  var self = this;
 
-	// Create google infowindow
-	var infowindow = new google.maps.InfoWindow();
-	
-	// Place markers on map
-    for (i = 0; i < model.length; i++) {
-	   marker = new google.maps.Marker({
-		   position: new google.maps.LatLng(model[i].lat, model[i].long),
-		   map: map,
-		   title: model[i].name
-	   });
-	   
-	   // Add google maps 'click' listener and infowindow for each marker 
-	   google.maps.event.addListener(marker, 'click', (function(marker){
-		   return function() {
-			   map.panTo(marker.getPosition());
-			   infowindow.setContent(marker.title+"<div id='content'></div>");
-			   infowindow.open(map, marker);
-		   }
-	   })(marker));	   
-	   
-	   markers.push(marker);
-    }
-   
-    // Create search box and link it to the UI element.
-    var input = /** @type {HTMLInputElement} */
-		(
-			document.getElementById('pac-input')
-		);
-	map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-	
-	// Create function to open info windows in response to clicks on list-view.
-	var OpenInfoWindow= function(model){
-	    var point= markers[model.markerNum];
-	    map.panTo(point.getPosition());
+  // Define and assign KO observables
+  self.locArray= ko.observableArray(locArray);
+  self.markers=ko.observableArray(markers);
+  self.filter= ko.observable('');
+  
+  // Infowindow list click function
+  self.OpenInfoWindow= function(locArray){
+    var point= markers[locArray.markerNum];
+      map.panTo(point.getPosition());
 
-	    // set info window with a title and open the info window
-	    infowindow.open(map, point);
-	    infowindow.setContent(point.title+"<div id='content'></div>");
-	    getApi(point);
-
-	 };
+	 // Open infowindow on click
+	 infowindow.open(map, point);
+	 infowindow.setContent(point.title);
+	 infowindow.setContent(point.title+"<div id='content'>"+"<a href="+wikiUrl+">"+"Wikipedia Article"+"</a>"+"</div>");
 	
+	 // Google Maps marker animation
+	 point.setAnimation(google.maps.Animation.BOUNCE);
+	 setTimeout(function(){ point.setAnimation(null); }, 750);
+  };
+ 
+  // Filter show/hide markers function
+  self.showOrHideMarkers= function(state){
+           for (var i = 0; i < markers.length; i++) {
+            markers[i].setMap(state);
+          }
+        };
+        
+  // KO arrayFilter
+  self.filterArray = function(filter){
+       return ko.utils.arrayFilter(self.locArray(), function(location) {
+        return location.name.toLowerCase().indexOf(filter) >= 0;
+       });
+  };
+  
+  // Selected marker displayed
+  self.displaySelected = function(filteredmarkers){
+  for (var i = 0; i < filteredmarkers.length; i++) {
+             markers[filteredmarkers[i].markerNum].setMap(map);
+            }
+      };
+
+  // Filter of locArray list
+  self.filterList = function(){
+	var filter = self.filter().toLowerCase();
+	  if (!filter) {
+	      self.showOrHideMarkers(map);
+	     return self.locArray();
+	  } else {	
+	  self.showOrHideMarkers(null);
+	  var filteredmarkers = [];
+	  filteredmarkers = self.filterArray(filter);
+	  self.displaySelected(filteredmarkers);
+	  return filteredmarkers;	
+	  }
+	}; 
 };
+
+
+google.maps.event.addDomListener(window, 'load', initMap);
 ko.applyBindings(new mapViewModel());
