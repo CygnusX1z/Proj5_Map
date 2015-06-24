@@ -2,6 +2,7 @@
 var marker;*/
 var map;
 var markers = []; 
+
 //Model
 locArray = [
             {name: "Casino Monte Carlo" 			,lat: 43.739146, long: 7.428073, urlName: "Monte_Carlo_Casino"							, markerNum: 0}
@@ -18,6 +19,7 @@ locArray = [
            ,{name: "Royal Marine Museum & Aquarium"	,lat: 43.730612, long: 7.425276, urlName: "Royal%20Marine%20Museum%20&%20Aquarium%20Monaco"	, markerNum: 11}             
            ,{name: "Saint Nicholas Cathedral" 		,lat: 43.730287, long: 7.422677, urlName: "Saint_Nicholas_Cathedral,_Monaco" 			, markerNum: 12}            
          ];
+
 var initMap = function() {
   // Set 'starting' position and mapOptions
   monaco= new google.maps.LatLng(43.737426, 7.421087);
@@ -27,32 +29,34 @@ var initMap = function() {
   };
   
  // Create map and place in map-canvas div
- map = new google.maps.Map(document.getElementById('map-canvas'),
-      mapOptions);
+ map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
  
- // Create markers and infowindow and place on map
- self.infowindow = new google.maps.InfoWindow();
-  for (i = 0; i < locArray.length; i++) {
-	  var wikiUrl =  'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + locArray[i].urlName + '&format=json&callback=wikiCallback';
-	  var contentString = '<ul id="wikipedia-links"></ul>';
+ // Create infowindow and contentString variables
+ var infowindow = new google.maps.InfoWindow();
+ var contentString = '<ul id="wikipedia-links">bla</ul>';
+ 
+ //Create markers and infowindow and place on map
+ for (i = 0; i < locArray.length; i++) {
+	  var wikiUrl =  'http://en.wikipedia.org/w/api.php?action=opensearch&search=' 
+		  + locArray[i].urlName + '&format=json&callback=wikiCallback';	  
 	  //console.log(wikiUrl);
-		/* var wikiRequestTimeout = setTimeout(function(){
+	  var wikiRequestTimeout = setTimeout(function(){
 			wikiUrl = "Wikipedia resource not found.";
-		}, 8000); */
-	
-    marker = new google.maps.Marker({
+		}, 8000);
+		  
+	  var marker = new google.maps.Marker({
               position: new google.maps.LatLng(locArray[i].lat, locArray[i].long)
     		, map: map
     		, title: locArray[i].name  
     		, wikiLink: contentString
         });
-
-    	// Google Maps API on click addListener
-        google.maps.event.addListener(marker, 'click', (function(marker)  {
-            return function() {
-                map.panTo(marker.getPosition());
-                infowindow.setContent(marker.title+marker.wikiLink);
-                infowindow.open(map, marker);
+	  
+	  // Google Maps API on click addListener
+	  google.maps.event.addListener(marker, 'click', (function(marker)  {
+		  return function() {
+			  map.panTo(marker.getPosition());
+			  infowindow.setContent(marker.title+marker.wikiLink);
+			  infowindow.open(map, marker);
 
               // Google Maps API marker animation
               marker.setAnimation(google.maps.Animation.BOUNCE);
@@ -61,20 +65,26 @@ var initMap = function() {
         })(marker));
         markers.push(marker);   
         
-    $.ajax({
+       $.ajax({
     	url: wikiUrl,
     	dataType: "jsonp",
     	success: function(response) {
     		var articleList = response[1];
     		for (var i=0; i < articleList.length; i++) {
-    			articleStr = articleList[0];
+    			articleStr = articleList[0]; // Use first returned article
     			var url = 'http://en.wikipedia.org/wiki/' + articleStr;
     			console.log(url);
-    			//$wikiElem.append('<li><a href="' + url + '" target="_blank">' + articleStr + '</a></li>')
-    		};                 
-    		//clearTimeout(wikiRequestTimeout);
+    			$.each(markers, function(index,marker){
+    				$.ajaxSetup({ cache: false });
+    				$.getJSON("wikiURL"),
+    					function(data){
+    					marker.infowindow.getContent.setContent("foo bar")
+    				}
+    			})
+    		};
+    		clearTimeout(wikiRequestTimeout);
     	}
-    });
+       });
     //return false;
   };
 };
