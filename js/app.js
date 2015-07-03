@@ -39,11 +39,12 @@ var initMap = function() {
  for (i = 0; i < locArray.length; i++) {
 	  var wikiUrl =  'http://en.wikipedia.org/w/api.php?action=opensearch&search=' 
 		  + locArray[i].urlName + '&format=json&callback=wikiCallback';	  
-	  //console.log(wikiUrl);
 	  var wikiRequestTimeout = setTimeout(function(){
 			wikiUrl = "Wikipedia resource not found.";
 		}, 8000);
-		  
+	
+	  console.log(wikiUrl);
+	  
 	  var marker = new google.maps.Marker({
               position: new google.maps.LatLng(locArray[i].lat, locArray[i].long)
     		, map: map
@@ -74,15 +75,16 @@ var initMap = function() {
     			articleStr = articleList[0]; // Use first returned article
     			var url = 'http://en.wikipedia.org/wiki/' + articleStr;
     			console.log(url);
+    			
     			$.each(markers, function(index,marker){
     				$.ajaxSetup({ cache: false });
     				$.getJSON("wikiURL"),
     					function(data){
     					marker.infowindow.getContent.setContent("foo bar")
-    				}
+    				}    				
     			})
     		};
-    		clearTimeout(wikiRequestTimeout);
+    		//clearTimeout(wikiRequestTimeout);
     	}
        });
     //return false;
