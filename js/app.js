@@ -1,5 +1,6 @@
 /*var infowindow, map, monaco, locArray, Url;
 var marker;*/
+
 var map;
 var markers = []; 
 
@@ -20,30 +21,34 @@ locArray = [
            ,{name: "Saint Nicholas Cathedral" 		,lat: 43.730287, long: 7.422677, urlName: "Saint_Nicholas_Cathedral,_Monaco" 			, markerNum: 12}            
          ];
 
+
 var initMap = function() {
   // Set 'starting' position and mapOptions
-  monaco= new google.maps.LatLng(43.737426, 7.421087);
+  var monaco= new google.maps.LatLng(43.737426, 7.421087);
   var mapOptions = {
     zoom: 15,
     center: monaco
   };
   
  // Create map and place in map-canvas div
- map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
- 
- // Create infowindow and contentString variables
- var infowindow = new google.maps.InfoWindow();
- var contentString = '<ul id="wikipedia-links">bla</ul>';
+ var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
  
  //Create markers and infowindow and place on map
  for (i = 0; i < locArray.length; i++) {
-	  var wikiUrl =  'http://en.wikipedia.org/w/api.php?action=opensearch&search=' 
-		  + locArray[i].urlName + '&format=json&callback=wikiCallback';	  
+	  var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + locArray[i].urlName + '&format=json&callback=wikiCallback';	  
+	  //console.log(wikiUrl);
+	  
 	  var wikiRequestTimeout = setTimeout(function(){
 			wikiUrl = "Wikipedia resource not found.";
 		}, 8000);
-	
-	  console.log(wikiUrl);
+	  //console.log(wikiRequestTimeout);
+
+	  
+	//Create infowindow and contentString variables
+	  var contentString = '<ul id="wikipedia-links">bla</ul>';
+	  var infowindow = new google.maps.InfoWindow({
+	  	content: contentString
+	  });
 	  
 	  var marker = new google.maps.Marker({
               position: new google.maps.LatLng(locArray[i].lat, locArray[i].long)
@@ -57,6 +62,7 @@ var initMap = function() {
 		  return function() {
 			  map.panTo(marker.getPosition());
 			  infowindow.setContent(marker.title+marker.wikiLink);
+			  //infowindow.setContent(marker.title);
 			  infowindow.open(map, marker);
 
               // Google Maps API marker animation
@@ -72,22 +78,12 @@ var initMap = function() {
     	success: function(response) {
     		var articleList = response[1];
     		for (var i=0; i < articleList.length; i++) {
-    			articleStr = articleList[0]; // Use first returned article
-    			var url = 'http://en.wikipedia.org/wiki/' + articleStr;
+    			articleStr = articleList[0]; // Use first returned article when more than one is returned
+    			var url = 'http://en.wikipedia.org/wiki/' + articleStr; 
     			console.log(url);
-    			
-    			$.each(markers, function(index,marker){
-    				$.ajaxSetup({ cache: false });
-    				$.getJSON("wikiURL"),
-    					function(data){
-    					marker.infowindow.getContent.setContent("foo bar")
-    				}    				
-    			})
-    		};
-    		//clearTimeout(wikiRequestTimeout);
+    		}  		
     	}
        });
-    //return false;
   };
 };
 
@@ -108,7 +104,6 @@ var mapViewModel = function(){
 	 // Open infowindow on click
 	 infowindow.open(map, point);
 	 infowindow.setContent(point.title);
-	 //infowindow.setContent(point.title+"<div id='content'>"+"<a href="+wikiUrl+">"+"Wikipedia Article"+"</a>"+"</div>");
 	
 	 // Google Maps marker animation
 	 point.setAnimation(google.maps.Animation.BOUNCE);
