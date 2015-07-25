@@ -1,6 +1,6 @@
-<h1>Udacity Front-End Web Developer Nano-Degree Project 5(of 6) "Neighborhood" Map</h1>
+<h1>Udacity Front-End Web Developer Nano-Degree Project 5 (of 6) "Neighborhood" Map</h1>
 
-<h2>An application to explore the sites at Monaco Grand Prix</h2>
+<h2>An application to explore points of interest in the Principality of Monaco.</h2>
 
 <p>The My Dream Neighborhood application uses the Google Maps API, Wikipedia API and Knockout JS JavaScript library to help a user explore several "points of interest" in the Principality of Monaco.</p>
 
