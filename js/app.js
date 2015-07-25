@@ -109,6 +109,8 @@ var ViewModel = function(){
         infoBubble.updateContent_();
     };
     
+    
+    // Set the pin on the "currently" selected option
     this.setCurrentPlace = function(data){
         self.list().forEach(function(data){
             data.setIcon(null);
