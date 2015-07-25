@@ -24,6 +24,7 @@
 	<li><a href="http://www.w3schools.com/js/js_object_prototypes.asp" target="_blank">W3Schools.com - JavaScript Object Prototypes</a></li>
 	<li><a href="http://www.jquery4u.com/function-demos/index.php?function=ajax" target="_blank">jQuery Ajax Function Example</a></li>
 	<li><a href="http://js-tutorial.com/infobubble-47" target="_blank">JS-tutorial - InfoBubble</a></li>
+	<li>And others I can't remember any more...</li>
 </ul>
 
 
