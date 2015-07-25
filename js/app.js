@@ -1,150 +1,144 @@
-/*var infowindow, map, monaco, locArray, Url;
-var marker;*/
+// Create GoogleMaps object
+var Map = function (element, opts) {
+    this.gMap = new google.maps.Map(element, opts);
+    this.zoom = function (level) {
+        if (level) {
+            this.gMap.setZoom(level);
+        } else {
+            return this.gMap.getZoom();
+        }
+    };
+};
 
-var map;
-var markers = []; 
-
-//Model
-locArray = [
-            {name: "Casino Monte Carlo" 			,lat: 43.739146, long: 7.428073, urlName: "Monte_Carlo_Casino"							, markerNum: 0}
-           ,{name: "Cathedral of Saint Charles"		,lat: 43.742619, long: 7.427236, urlName: "Cathedral%20of%20Saint%20Charles%20Monaco"	, markerNum: 1} 
-           ,{name: "Church of Saint Devote"			,lat: 43.737426, long: 7.421087, urlName: "Sainte-Dévote%20Chapel"						, markerNum: 2}
-           ,{name: "Exotic Gardens of Monaco"		,lat: 43.731381, long: 7.414032, urlName: "Jardin_Exotique_de_Monaco"					, markerNum: 3}
-           ,{name: "Francois Grimaldi Statue"		,lat: 43.731372, long: 7.421282, urlName: "Fran%C3%A7ois_Grimaldi"						, markerNum: 4}	
-           ,{name: "Grimaldi Forum"					,lat: 43.744038, long: 7.431400, urlName: "Grimaldi_Forum"								, markerNum: 5}
-           ,{name: "Hotel Hermitage Monte-Carlo"	,lat: 43.738240, long: 7.425863, urlName: "Hotel%20Hermitage%20Monte-Carlo"				, markerNum: 6}
-           ,{name: "Japanese Gardens"				,lat: 43.742343, long: 7.430889, urlName: "Japanese%20Gardens%20Monaco"					, markerNum: 7}
-           ,{name: "Monaco Grand Prix"				,lat: 43.733628, long: 7.421658, urlName: "Monaco%20Grand%20Prix"						, markerNum: 8}
-           ,{name: "Monte-Carlo Bay Hotel & Resort"	,lat: 43.748983, long: 7.438866, urlName: "Monte-Carlo%20Bay%20Hotel%20&%20Resort"		, markerNum: 9}
-           ,{name: "Prince's Palace of Monaco"		,lat: 43.731444, long: 7.419906, urlName: "Prince's%20Palace%20of%20Monaco"				, markerNum: 10}             
-           ,{name: "Royal Marine Museum & Aquarium"	,lat: 43.730612, long: 7.425276, urlName: "Royal%20Marine%20Museum%20&%20Aquarium%20Monaco"	, markerNum: 11}             
-           ,{name: "Saint Nicholas Cathedral" 		,lat: 43.730287, long: 7.422677, urlName: "Saint_Nicholas_Cathedral,_Monaco" 			, markerNum: 12}            
-         ];
-
-
-var initMap = function() {
-  // Set 'starting' position and mapOptions
-  var monaco= new google.maps.LatLng(43.737426, 7.421087);
-  var mapOptions = {
+// Map Options
+var mapOptions = {
+    center: {
+    	lat: 43.738240, lng: 7.425863	// On Hotel Hermitage
+    },
     zoom: 15,
-    center: monaco
-  };
-  
- // Create map and place in map-canvas div
- var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
- 
- //Create markers and infowindow and place on map
- for (i = 0; i < locArray.length; i++) {
-	  var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + locArray[i].urlName + '&format=json&callback=wikiCallback';	  
-	  //console.log(wikiUrl);
-	  
-	  var wikiRequestTimeout = setTimeout(function(){
-			wikiUrl = "Wikipedia resource not found.";
-		}, 8000);
-	  //console.log(wikiRequestTimeout);
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+};
 
-	  
-	//Create infowindow and contentString variables
-	  var contentString = '<ul id="wikipedia-links">bla</ul>';
-	  var infowindow = new google.maps.InfoWindow({
-	  	content: contentString
-	  });
-	  
-	  var marker = new google.maps.Marker({
-              position: new google.maps.LatLng(locArray[i].lat, locArray[i].long)
-    		, map: map
-    		, title: locArray[i].name  
-    		, wikiLink: contentString
-        });
-	  
-	  // Google Maps API on click addListener
-	  google.maps.event.addListener(marker, 'click', (function(marker)  {
-		  return function() {
-			  map.panTo(marker.getPosition());
-			  infowindow.setContent(marker.title+marker.wikiLink);
-			  //infowindow.setContent(marker.title);
-			  infowindow.open(map, marker);
+var element = document.getElementById('map-canvas'),
+    iconSelected = './images/gMapPin.png';
+var map = new Map(element, mapOptions);
+map.zoom(15);
 
-              // Google Maps API marker animation
-              marker.setAnimation(google.maps.Animation.BOUNCE);
-              setTimeout(function(){ marker.setAnimation(null); }, 750);
+// Create infoBubble library. Adds tabs to the info bubbles on the markers
+var infoBubble = new InfoBubble({
+    maxWidth: 300   
+});
+
+infoBubble.addTab('Wikipedia','Oops! Content is not available.');
+infoBubble.addTab('Street View','Oops! Content is not available.');
+
+// MODEL
+var places = [
+     { id:  1, name: 'François Grimaldi'			 	,map: map.gMap, position: { lat: 43.731372, lng: 7.421282 }, icon: null, animation: google.maps.Animation.DROP, selected: 0 }
+    ,{ id:  2, name: 'Grimaldi Forum'			 		,map: map.gMap, position: { lat: 43.744038, lng: 7.431400 }, icon: null, animation: google.maps.Animation.DROP, selected: 0 }
+    ,{ id:  3, name: 'Hotel Hermitage Monte-Carlo'		,map: map.gMap, position: { lat: 43.738240, lng: 7.425863 }, icon: null, animation: google.maps.Animation.DROP, selected: 0 }
+    ,{ id:  4, name: 'Jardin Exotique de Monaco'	 	,map: map.gMap, position: { lat: 43.731381, lng: 7.414032 }, icon: null, animation: google.maps.Animation.DROP, selected: 0 }
+    ,{ id:  5, name: 'Monaco Grand Prix'			 	,map: map.gMap, position: { lat: 43.733628, lng: 7.421658 }, icon: null, animation: google.maps.Animation.DROP, selected: 0 }
+    ,{ id:  6, name: 'Monte Carlo Casino'		 		,map: map.gMap, position: { lat: 43.739444, lng: 7.428889 }, icon: null, animation: google.maps.Animation.DROP, selected: 0 }
+    ,{ id:  7, name: 'Monte-Carlo Bay Hotel & Resort'	,map: map.gMap, position: { lat: 43.748983, lng: 7.438866 }, icon: null, animation: google.maps.Animation.DROP, selected: 0 }
+    ,{ id:  8, name: 'Oceanographic Museum'				,map: map.gMap, position: { lat: 43.730833, lng: 7.425278 }, icon: null, animation: google.maps.Animation.DROP, selected: 0 }
+    ,{ id:  9, name: 'Saint Nicholas Cathedral, Monaco'	,map: map.gMap, position: { lat: 43.730287, lng: 7.422677 }, icon: null, animation: google.maps.Animation.DROP, selected: 0 } 
+    ,{ id: 10, name: 'Sainte-Dévote Chapel'				,map: map.gMap, position: { lat: 43.737426, lng: 7.421087 }, icon: null, animation: google.maps.Animation.DROP, selected: 0 }
+];
+
+//create marker
+var Place = function(place) {
+    place.name = ko.observable(place.name);
+    place.selected = ko.observable(place.selected);
+    var marker = new google.maps.Marker(place);
+    if (map.markerCluster) {
+        map.markerCluster.addMarker(marker);
+    }
+    return marker;
+};
+
+//octopus ViewModel
+var ViewModel = function(){
+    var self = this;
+    this.list = ko.observableArray([]);
+
+    //create and bind our markers from our raw data
+    places.forEach(function(place){
+        var marker = new Place(place);
+        //add event listener using a closure.
+        google.maps.event.addListener(marker, 'click', (function(Copy) {
+            return function() {
+                self.setCurrentPlace(Copy);
             };
         })(marker));
-        markers.push(marker);   
-        
-       $.ajax({
-    	url: wikiUrl,
-    	dataType: "jsonp",
-    	success: function(response) {
-    		var articleList = response[1];
-    		for (var i=0; i < articleList.length; i++) {
-    			articleStr = articleList[0]; // Use first returned article when more than one is returned
-    			var url = 'http://en.wikipedia.org/wiki/' + articleStr; 
-    			console.log(url);
-    		}  		
-    	}
-       });
-  };
-};
 
-// ViewModel
-var mapViewModel = function(){
-  var self = this;
-
-  // Define and assign KO observables
-  self.locArray= ko.observableArray(locArray);
-  self.markers=ko.observableArray(markers);
-  self.filter= ko.observable('');
-  
-  // Infowindow list click function
-  self.OpenInfoWindow= function(locArray){
-    var point= markers[locArray.markerNum];
-      map.panTo(point.getPosition());
-
-	 // Open infowindow on click
-	 infowindow.open(map, point);
-	 infowindow.setContent(point.title);
-	
-	 // Google Maps marker animation
-	 point.setAnimation(google.maps.Animation.BOUNCE);
-	 setTimeout(function(){ point.setAnimation(null); }, 750);
-  };
- 
-  // Filter show/hide markers function
-  self.showOrHideMarkers= function(state){
-           for (var i = 0; i < markers.length; i++) {
-            markers[i].setMap(state);
-          }
-        };
-        
-  // KO arrayFilter
-  self.filterArray = function(filter){
-       return ko.utils.arrayFilter(self.locArray(), function(location) {
-        return location.name.toLowerCase().indexOf(filter) >= 0;
-       });
-  };
-  
-  // Selected marker displayed
-  self.displaySelected = function(filteredmarkers){
-  for (var i = 0; i < filteredmarkers.length; i++) {
-             markers[filteredmarkers[i].markerNum].setMap(map);
+        self.list().push(marker);
+    });    
+    
+    this.wikiCall = function(data){
+        var wikiTimeOut = setTimeout(function(){
+            infoBubble.updateTab(0, '<div class="infoBubble">Wiki</div>', "request failed");
+            infoBubble.updateContent_();
+        }, 8000);
+        $.ajax({
+            url: "http://en.wikipedia.org/w/api.php?action=opensearch&format=json&callback=wikiCallback&limit=10&search="+data.name(),
+            type: 'POST',
+            dataType: "jsonp",
+            success: function( response ) {
+                var articleTitle = response[1];
+                var articleLink = response[3];
+                var result = [];
+                for (var i = 0; i < articleTitle.length; i++){
+                    var title = articleTitle[i];
+                    var link = articleLink[i];
+                    result.push('<li><a href="'+link+'"target="_blank">'+title+'</a></li>');
+                }
+                var contentString = result.join('');
+                clearTimeout(wikiTimeOut);
+                infoBubble.updateTab(0,'<div class="infoBubble">Wikipedia</div>',contentString);
+                infoBubble.updateContent_();
             }
-      };
-
-  // Filter of locArray list
-  self.filterList = function(){
-	var filter = self.filter().toLowerCase();
-	  if (!filter) {
-	      self.showOrHideMarkers(map);
-	     return self.locArray();
-	  } else {	
-	  self.showOrHideMarkers(null);
-	  var filteredmarkers = [];
-	  filteredmarkers = self.filterArray(filter);
-	  self.displaySelected(filteredmarkers);
-	  return filteredmarkers;	
-	  }
-	}; 
+        });
+    };
+    
+    this.streetView = function(data){
+        var img = data.position.A + "," + data.position.F;
+        var contentString = '<img class="bgimg" alt="failed to load image...check internet" src="https://maps.googleapis.com/maps/api/streetview?size=600x300&location='+img+'">';
+        infoBubble.updateTab(1,'<div class="infoBubble">Street View</div>',contentString);
+        infoBubble.updateContent_();
+    };
+    
+    this.setCurrentPlace = function(data){
+        self.list().forEach(function(data){
+            data.setIcon(null);
+            data.selected(null);
+        });
+        data.setIcon(iconSelected);
+        data.selected(1);
+        self.currentPlace(data);
+        //self.ajaxCallNY(data);
+        self.wikiCall(data);
+        self.streetView(data);
+        infoBubble.open(map.gMap, data);
+        return true;
+    };
+    this.currentPlace = ko.observable( this.list()[0] );
+    this.searchBox = ko.observable("");
+    //use ko utils arrayFilter to filter the array of markers to implement the search functionality
+    this.searchPlaces = ko.computed(function() {
+            if(self.searchBox() === "") {
+                return self.list();
+            } else {
+                return ko.utils.arrayFilter(self.list(), function(item) {
+                    return item.name().toLowerCase().indexOf(self.searchBox().toLowerCase())>-1;
+                });
+            }
+        });
+    $( "#placesBtn" ).click(function() {
+        $( "#places" ).toggleClass( "hidden-xs" );
+    });
+    window.onload = function() {
+        self.setCurrentPlace(self.list()[0]);
+    };
 };
-google.maps.event.addDomListener(window, 'load', initMap);
-ko.applyBindings(new mapViewModel());
+ko.applyBindings(new ViewModel());
