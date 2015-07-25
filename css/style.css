@@ -1,0 +1,65 @@
+html {
+	height: 100%
+}
+
+body{
+	height: 100%;
+	padding: 0;
+	margin: 0;
+}
+
+#map-canvas{
+	height: 100%;
+}
+
+.infoBubble{
+	padding: 0;
+	margin: 0;
+	border: 0;
+	font-size: 1.2em;
+}
+
+.places{
+	height: 300px;
+	width: 300px;
+	float: left;
+	position: absolute;
+	z-index: 1;
+	top: 0;
+	left: 20px;
+	font-size: 1.2em;
+}
+
+.placesBtn{
+	float: left;
+	position: absolute;
+	z-index: 1;
+	top: 80%;
+}
+
+input, textarea{
+	background-color:#666;
+	color: #FFF;
+}
+
+ul {
+	list-style-type: none;
+	padding: 10px;
+	margin: 10px;
+	background-color: rgba(0, 0, 0, 0.5);
+	color: whitesmoke;
+	line-height: 24px;
+}
+
+li:hover{
+	background: grey;
+}
+
+.bgimg{
+	width: 275px;
+	height: 160px;
+}
+
+.selected {
+	background: darkgray;
+}
