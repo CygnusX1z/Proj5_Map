@@ -60,7 +60,7 @@ var Place = function(place) {
 // ViewModel
 var ViewModel = function(){
     var self = this;
-    this.list = ko.observableArray([]);
+    self.list = ko.observableArray([]);
 
     // Create and bind markers using the "places" array
     places.forEach(function(place){
@@ -75,7 +75,7 @@ var ViewModel = function(){
     });    
     
     // Ajax call to Wikipedia
-    this.wikiCall = function(data){
+    self.wikiCall = function(data){
         var wikiTimeOut = setTimeout(function(){
             infoBubble.updateTab(0, '<div class="infoBubble">Wikipedia</div>', "So sorry, the request to Wikipedia has failed");
             infoBubble.updateContent_();
@@ -102,7 +102,7 @@ var ViewModel = function(){
     };
     
     // Google Maps Street View
-    this.streetView = function(data){
+    self.streetView = function(data){
         var img = data.position.A + "," + data.position.F;
         var contentString = '<img class="bgimg" alt="So sorry, the image failed to load." src="https://maps.googleapis.com/maps/api/streetview?size=600x300&location='+img+'">';
         infoBubble.updateTab(1,'<div class="infoBubble">Street View</div>',contentString);
@@ -111,7 +111,7 @@ var ViewModel = function(){
     
     
     // Set the pin on the "currently" selected option
-    this.setCurrentPlace = function(data){
+    self.setCurrentPlace = function(data){
         self.list().forEach(function(data){
             data.setIcon(null);
             data.selected(null);
@@ -124,9 +124,9 @@ var ViewModel = function(){
         infoBubble.open(map.gMap, data);
         return true;
     };
-    this.currentPlace = ko.observable( this.list()[0] );
-    this.searchBox = ko.observable("");
-    this.searchPlaces = ko.computed(function() {
+    self.currentPlace = ko.observable( this.list()[0] );
+    self.searchBox = ko.observable("");
+    self.searchPlaces = ko.computed(function() {
             if(self.searchBox() === "") {
                 return self.list();
             } else {
