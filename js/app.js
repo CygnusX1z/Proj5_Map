@@ -13,7 +13,7 @@ var Map = function (element, opts) {
 // Map Options
 var mapOptions = {
     center: {
-    	lat: 43.738240, lng: 7.425863	// On Hotel Hermitage
+    	lat: 43.738240, lng: 7.425863 // On Hotel Hermitage
     },
     zoom: 15,
     mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -26,7 +26,7 @@ map.zoom(15);
 
 // Create infoBubble library. Adds tabs to the info bubbles on the markers
 var infoBubble = new InfoBubble({
-    maxWidth: 300   
+    maxWidth: 300
 });
 
 infoBubble.addTab('Wikipedia','Oops! Content is not available.');
@@ -42,7 +42,7 @@ var places = [
     ,{ id:  6, name: 'Monte Carlo Casino' ,map: map.gMap, position: { lat: 43.739444, lng: 7.428889 }, icon: null, animation: google.maps.Animation.DROP, selected: 0 }
     ,{ id:  7, name: 'Monte-Carlo Bay Hotel & Resort' ,map: map.gMap, position: { lat: 43.748983, lng: 7.438866 }, icon: null, animation: google.maps.Animation.DROP, selected: 0 }
     ,{ id:  8, name: 'Oceanographic Museum'	,map: map.gMap, position: { lat: 43.730833, lng: 7.425278 }, icon: null, animation: google.maps.Animation.DROP, selected: 0 }
-    ,{ id:  9, name: 'Saint Nicholas Cathedral, Monaco'	,map: map.gMap, position: { lat: 43.730287, lng: 7.422677 }, icon: null, animation: google.maps.Animation.DROP, selected: 0 } 
+    ,{ id:  9, name: 'Saint Nicholas Cathedral, Monaco'	,map: map.gMap, position: { lat: 43.730287, lng: 7.422677 }, icon: null, animation: google.maps.Animation.DROP, selected: 0 }
     ,{ id: 10, name: 'Sainte-Dévote Chapel' ,map: map.gMap, position: { lat: 43.737426, lng: 7.421087 }, icon: null, animation: google.maps.Animation.DROP, selected: 0 }
 ];
 
@@ -72,8 +72,7 @@ var ViewModel = function(){
             };
         })(marker));
         self.list().push(marker);
-    });    
-    
+    });
     // Ajax call to Wikipedia
     self.wikiCall = function(data){
         var wikiTimeOut = setTimeout(function(){
@@ -100,7 +99,6 @@ var ViewModel = function(){
             }
         });
     };
-    
     // Google Maps Street View
     self.streetView = function(data){
         var img = data.position.A + "," + data.position.F;
@@ -108,8 +106,6 @@ var ViewModel = function(){
         infoBubble.updateTab(1,'<div class="infoBubble">Street View</div>',contentString);
         infoBubble.updateContent_();
     };
-    
-    
     // Set the pin on the "currently" selected option
     self.setCurrentPlace = function(data){
         self.list().forEach(function(data){
