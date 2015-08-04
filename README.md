@@ -10,8 +10,8 @@ library to help a user explore several "points of interest" in the Principality 
 * Click on any pin on the map to highlight the specific pin along with a popup window with links to Wikipedia article(s) 
 about that location as well as Google Street View photo (when available). 
 * Use the 'hamburger' style menu at top right to view the list of the "points of interest" in the Principality of Monaco. 
-Clicking on any of the list items will also highlight the pin location and will popup a window with links to Wikipedia. Click the 'X' to close the menu.
-article(s) about that location as well as a Google Street View photo (when available).
+Clicking on any of the list items will also highlight the pin location and will popup a window with links to Wikipedia
+article(s) about that location as well as a Google Street View photo (when available). Click the 'X' to close the menu.
 * Additionally, you can sue the _search_ box to filter the points of interest. 
 
 ## References:
