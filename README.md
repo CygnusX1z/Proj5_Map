@@ -2,12 +2,16 @@
 
 ## An application to explore points of interest in the Principality of Monaco.
 
-The My Dream Neighborhood application uses the Google Maps API, Wikipedia API and Knockout JS JavaScript library to help a user explore several "points of interest" in the Principality of Monaco.
+The My Dream Neighborhood application uses the Google Maps API, Wikipedia API and Knockout JS JavaScript 
+library to help a user explore several "points of interest" in the Principality of Monaco.
 
 ## Running instructions:
 * Go to [Udacity Front-End Web Developer Project 5](http://cygnusx1z.github.io) page. 
-* Click on any pin on the map to highlight the specific pin along with a popup window with links to Wikipedia article(s) about that location as well as Google Street View photo (when available). 
-* Use the 'hamburger' style menu at top right to view the list of the "points of interest" in the Principality of Monaco. Clicking on any of the list items will also highlight the pin location and will popup a widnow with links to Wikipedia article(s) about that location as well as a Google Street View photo (when available).
+* Click on any pin on the map to highlight the specific pin along with a popup window with links to Wikipedia article(s) 
+about that location as well as Google Street View photo (when available). 
+* Use the 'hamburger' style menu at top right to view the list of the "points of interest" in the Principality of Monaco. 
+Clicking on any of the list items will also highlight the pin location and will popup a window with links to Wikipedia. Click the 'X' to close the menu.
+article(s) about that location as well as a Google Street View photo (when available).
 * Additionally, you can sue the _search_ box to filter the points of interest. 
 
 ## References:
