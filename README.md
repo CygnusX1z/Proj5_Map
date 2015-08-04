@@ -30,4 +30,4 @@ Along with the _pins_ you can also use the list at top left to go directly to th
 *   [W3Schools.com - JavaScript Object Prototypes](http://www.w3schools.com/js/js_object_prototypes.asp)
 *   [jQuery Ajax Function Example](http://www.jquery4u.com/function-demos/index.php?function=ajax)
 *   [JS-tutorial - InfoBubble](http://js-tutorial.com/infobubble-47)
-*   And others I can't remember any more...
+*   [jQueryScript.net - Animated Side Navigation Menu Plugin - Sidebar](http://www.jqueryscript.net/menu/jQuery-Animated-Side-Navigation-Menu-Plugin-Sidebar.html)
